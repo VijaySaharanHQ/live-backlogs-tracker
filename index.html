@@ -4,1264 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>JEE 2027 — 4 Month Lecture Backlog Tracker</title>
-  <style>
-    :root {
-      --bg-primary: #f8fafc;
-      --bg-secondary: #ffffff;
-      --bg-card: #ffffff;
-      --text-primary: #0f172a;
-      --text-secondary: #475569;
-      --text-muted: #94a3b8;
-      --border-color: #e2e8f0;
-      --accent-blue: #2563eb;
-      --accent-blue-hover: #1d4ed8;
-      --accent-green: #10b981;
-      --accent-amber: #f59e0b;
-      --accent-rose: #ef4444;
-      --accent-purple: #8b5cf6;
-      --accent-cyan: #06b6d4;
-      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-      --radius-sm: 6px;
-      --radius-md: 10px;
-      --radius-lg: 16px;
-      --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    [data-theme="dark"] {
-      --bg-primary: #0b0f17;
-      --bg-secondary: #111827;
-      --bg-card: #1e293b;
-      --text-primary: #f8fafc;
-      --text-secondary: #cbd5e1;
-      --text-muted: #64748b;
-      --border-color: #334155;
-      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.5);
-      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3);
-      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-    }
-
-    body {
-      background-color: var(--bg-primary);
-      color: var(--text-primary);
-      line-height: 1.5;
-      padding-bottom: 60px;
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
-
-    /* Top Navigation / Header */
-    header {
-      background: var(--bg-card);
-      border-bottom: 1px solid var(--border-color);
-      padding: 24px 20px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .header-container {
-      max-width: 1440px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-
-    .header-titles h1 {
-      font-size: 1.5rem;
-      font-weight: 800;
-      letter-spacing: -0.025em;
-      color: var(--text-primary);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .header-titles p {
-      font-size: 0.875rem;
-      color: var(--text-secondary);
-      margin-top: 4px;
-      font-weight: 500;
-    }
-
-    .header-titles .badge-user {
-      display: inline-block;
-      font-size: 0.75rem;
-      background: rgba(37, 99, 235, 0.1);
-      color: var(--accent-blue);
-      padding: 2px 8px;
-      border-radius: 9999px;
-      font-weight: 600;
-      margin-top: 4px;
-      border: 1px solid rgba(37, 99, 235, 0.2);
-    }
-
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    /* Buttons */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 8px 14px;
-      font-size: 0.8125rem;
-      font-weight: 600;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border-color);
-      background: var(--bg-card);
-      color: var(--text-primary);
-      cursor: pointer;
-      transition: var(--transition);
-    }
-
-    .btn:hover {
-      background: var(--bg-primary);
-      border-color: var(--text-muted);
-    }
-
-    .btn-primary {
-      background: var(--accent-blue);
-      color: #ffffff;
-      border-color: var(--accent-blue);
-    }
-
-    .btn-primary:hover {
-      background: var(--accent-blue-hover);
-      border-color: var(--accent-blue-hover);
-    }
-
-    .btn-danger {
-      color: var(--accent-rose);
-      border-color: rgba(239, 68, 68, 0.3);
-    }
-
-    .btn-danger:hover {
-      background: rgba(239, 68, 68, 0.1);
-      border-color: var(--accent-rose);
-    }
-
-    /* Layout Container */
-    .container {
-      max-width: 1440px;
-      margin: 24px auto;
-      padding: 0 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-
-    /* Cards Grid */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 16px;
-    }
-
-    .stat-card {
-      background: var(--bg-card);
-      padding: 18px 20px;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border-color);
-      box-shadow: var(--shadow-sm);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .stat-card::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 4px;
-      height: 100%;
-      background: var(--accent-blue);
-    }
-
-    .stat-card.green::before { background: var(--accent-green); }
-    .stat-card.amber::before { background: var(--accent-amber); }
-    .stat-card.purple::before { background: var(--accent-purple); }
-    .stat-card.cyan::before { background: var(--accent-cyan); }
-
-    .stat-label {
-      font-size: 0.75rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-muted);
-    }
-
-    .stat-value {
-      font-size: 1.75rem;
-      font-weight: 800;
-      color: var(--text-primary);
-      margin: 8px 0 4px;
-    }
-
-    .stat-subtext {
-      font-size: 0.75rem;
-      color: var(--text-secondary);
-    }
-
-    /* Subject Progress Overview */
-    .subject-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 16px;
-    }
-
-    .subject-card {
-      background: var(--bg-card);
-      padding: 16px 18px;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border-color);
-      box-shadow: var(--shadow-sm);
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .subject-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .subject-title {
-      font-size: 0.9375rem;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .subject-stats {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.8125rem;
-      color: var(--text-secondary);
-      font-weight: 600;
-    }
-
-    .progress-bar-container {
-      width: 100%;
-      height: 8px;
-      background: var(--border-color);
-      border-radius: 9999px;
-      overflow: hidden;
-    }
-
-    .progress-bar-fill {
-      height: 100%;
-      width: 0%;
-      background: var(--accent-blue);
-      border-radius: 9999px;
-      transition: width 0.4s ease;
-    }
-
-    .progress-bar-fill.phy { background: #3b82f6; }
-    .progress-bar-fill.mat { background: #10b981; }
-    .progress-bar-fill.oc { background: #f59e0b; }
-    .progress-bar-fill.pc { background: #8b5cf6; }
-    .progress-bar-fill.ioc { background: #06b6d4; }
-
-    /* Dual Section: Planner & Goals */
-    .dual-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
-
-    @media (max-width: 900px) {
-      .dual-grid { grid-template-columns: 1fr; }
-    }
-
-    .dashboard-panel {
-      background: var(--bg-card);
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border-color);
-      padding: 20px;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .panel-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid var(--border-color);
-    }
-
-    .panel-title {
-      font-size: 1.05rem;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    /* Target inputs & checklist */
-    .daily-target-control {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: var(--bg-primary);
-      padding: 12px 16px;
-      border-radius: var(--radius-sm);
-      margin-bottom: 16px;
-    }
-
-    .daily-target-control input {
-      width: 60px;
-      padding: 6px;
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-sm);
-      font-size: 1rem;
-      font-weight: 700;
-      text-align: center;
-      background: var(--bg-card);
-      color: var(--text-primary);
-    }
-
-    .checklist {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .checklist-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 14px;
-      background: var(--bg-primary);
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border-color);
-      font-size: 0.875rem;
-      font-weight: 500;
-      cursor: pointer;
-      user-select: none;
-      transition: var(--transition);
-    }
-
-    .checklist-item:hover {
-      border-color: var(--accent-blue);
-    }
-
-    .checklist-item.completed {
-      text-decoration: line-through;
-      color: var(--text-muted);
-      background: rgba(16, 185, 129, 0.05);
-      border-color: rgba(16, 185, 129, 0.3);
-    }
-
-    .goal-metrics {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-
-    .metric-box {
-      background: var(--bg-primary);
-      padding: 12px;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border-color);
-    }
-
-    .metric-box-title {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      font-weight: 600;
-      text-transform: uppercase;
-    }
-
-    .metric-box-value {
-      font-size: 1.25rem;
-      font-weight: 800;
-      color: var(--text-primary);
-      margin-top: 4px;
-    }
-
-    .motivation-banner {
-      margin-top: 16px;
-      padding: 12px 16px;
-      border-radius: var(--radius-sm);
-      background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(139, 92, 246, 0.1));
-      border: 1px dashed var(--accent-blue);
-      font-size: 0.875rem;
-      font-weight: 600;
-      text-align: center;
-      color: var(--accent-blue);
-    }
-
-    /* Filter & Controls Toolbar */
-    .controls-panel {
-      background: var(--bg-card);
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border-color);
-      padding: 16px 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .filter-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .search-box {
-      position: relative;
-      flex: 1;
-      min-width: 260px;
-    }
-
-    .search-box input {
-      width: 100%;
-      padding: 9px 12px 9px 36px;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border-color);
-      background: var(--bg-primary);
-      color: var(--text-primary);
-      font-size: 0.875rem;
-      outline: none;
-      transition: var(--transition);
-    }
-
-    .search-box input:focus {
-      border-color: var(--accent-blue);
-      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
-    }
-
-    .search-box::before {
-      content: "🔍";
-      position: absolute;
-      left: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 0.875rem;
-      opacity: 0.5;
-    }
-
-    .filter-group {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    .filter-chip {
-      padding: 6px 12px;
-      font-size: 0.8125rem;
-      font-weight: 600;
-      border-radius: 9999px;
-      border: 1px solid var(--border-color);
-      background: var(--bg-primary);
-      color: var(--text-secondary);
-      cursor: pointer;
-      transition: var(--transition);
-      user-select: none;
-    }
-
-    .filter-chip:hover {
-      border-color: var(--accent-blue);
-      color: var(--text-primary);
-    }
-
-    .filter-chip.active {
-      background: var(--accent-blue);
-      color: #ffffff;
-      border-color: var(--accent-blue);
-    }
-
-    /* Table Component */
-    .table-container {
-      background: var(--bg-card);
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border-color);
-      box-shadow: var(--shadow-sm);
-      overflow: hidden;
-    }
-
-    .table-scroll {
-      max-height: 650px;
-      overflow-y: auto;
-      overflow-x: auto;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-      font-size: 0.875rem;
-    }
-
-    thead th {
-      position: sticky;
-      top: 0;
-      background: var(--bg-secondary);
-      padding: 12px 14px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-muted);
-      border-bottom: 2px solid var(--border-color);
-      z-index: 10;
-      white-space: nowrap;
-    }
-
-    tbody tr {
-      border-bottom: 1px solid var(--border-color);
-      transition: background-color 0.15s ease;
-    }
-
-    tbody tr:hover {
-      background-color: rgba(37, 99, 235, 0.02);
-    }
-
-    tbody tr.is-completed {
-      background-color: rgba(16, 185, 129, 0.04);
-    }
-
-    tbody td {
-      padding: 10px 14px;
-      vertical-align: middle;
-      color: var(--text-primary);
-    }
-
-    /* Table Specific Styles */
-    .col-id {
-      font-family: monospace;
-      font-weight: 700;
-      font-size: 0.8125rem;
-      color: var(--accent-blue);
-    }
-
-    .badge-sub {
-      display: inline-block;
-      padding: 3px 8px;
-      border-radius: 4px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      white-space: nowrap;
-    }
-
-    .badge-sub.phy { background: rgba(59, 130, 246, 0.15); color: #2563eb; }
-    .badge-sub.mat { background: rgba(16, 185, 129, 0.15); color: #059669; }
-    .badge-sub.oc { background: rgba(245, 158, 11, 0.15); color: #d97706; }
-    .badge-sub.pc { background: rgba(139, 92, 246, 0.15); color: #7c3aed; }
-    .badge-sub.ioc { background: rgba(6, 182, 212, 0.15); color: #0891b2; }
-
-    .editable-cell {
-      border: 1px solid transparent;
-      padding: 6px 8px;
-      border-radius: var(--radius-sm);
-      background: transparent;
-      color: inherit;
-      width: 100%;
-      font-size: 0.875rem;
-      transition: var(--transition);
-    }
-
-    .editable-cell:focus {
-      outline: none;
-      background: var(--bg-primary);
-      border-color: var(--accent-blue);
-    }
-
-    .duration-cell {
-      width: 65px;
-      text-align: center;
-      font-family: monospace;
-      font-weight: 600;
-    }
-
-    .status-select {
-      padding: 4px 8px;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border-color);
-      background: var(--bg-primary);
-      color: var(--text-primary);
-      font-size: 0.75rem;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    /* Custom Checkbox */
-    .checkbox-wrapper {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .custom-checkbox {
-      appearance: none;
-      width: 20px;
-      height: 20px;
-      border: 2px solid var(--border-color);
-      border-radius: 5px;
-      background: var(--bg-card);
-      cursor: pointer;
-      display: grid;
-      place-content: center;
-      transition: var(--transition);
-    }
-
-    .custom-checkbox:hover {
-      border-color: var(--accent-blue);
-    }
-
-    .custom-checkbox:checked {
-      background: var(--accent-green);
-      border-color: var(--accent-green);
-    }
-
-    .custom-checkbox:checked::before {
-      content: "✓";
-      color: #ffffff;
-      font-size: 13px;
-      font-weight: 900;
-    }
-
-    .date-badge {
-      font-size: 0.75rem;
-      font-family: monospace;
-      color: var(--text-secondary);
-      white-space: nowrap;
-    }
-
-    /* Modal / File Input */
-    #file-input { display: none; }
-
-    /* Footer & Empty states */
-    .table-footer-info {
-      padding: 12px 20px;
-      border-top: 1px solid var(--border-color);
-      font-size: 0.8125rem;
-      color: var(--text-muted);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .no-results {
-      padding: 40px 20px;
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 0.9375rem;
-    }
-
-    @media (max-width: 768px) {
-      .header-container { flex-direction: column; align-items: flex-start; }
-      .header-actions { width: 100%; justify-content: space-between; }
-      .goal-metrics { grid-template-columns: 1fr; }
-    }
-  </style>
-</head>
-<body>
-
-  <!-- Header -->
-  <header>
-    <div class="header-container">
-      <div class="header-titles">
-        <h1>🚀 JEE 2027 — 4 Month Lecture Backlog Tracker</h1>
-        <p>328 Lectures • 10 Hours/Day • 2 Live + 2 Backlog Lectures Daily</p>
-        <span class="badge-user">Created for Vijay Saharan</span>
-      </div>
-      <div class="header-actions">
-        <button class="btn" id="theme-toggle" title="Toggle Theme">🌙 Dark Mode</button>
-        <button class="btn" id="export-btn" title="Export progress to JSON">💾 Export</button>
-        <button class="btn" id="import-btn" title="Import progress from JSON">📂 Import</button>
-        <button class="btn btn-danger" id="reset-btn" title="Reset all tracker data">⚠️ Reset</button>
-        <input type="file" id="file-input" accept=".json" />
-      </div>
-    </div>
-  </header>
-
-  <div class="container">
-
-    <!-- Overview Stats Grid -->
-    <div class="stats-grid">
-      <div class="stat-card">
-        <span class="stat-label">Total Backlog</span>
-        <div class="stat-value" id="stat-total">328</div>
-        <span class="stat-subtext">Comprehensive syllabus target</span>
-      </div>
-      <div class="stat-card green">
-        <span class="stat-label">Completed</span>
-        <div class="stat-value" id="stat-completed">0</div>
-        <span class="stat-subtext" id="stat-completed-hrs">0 Hours Cleared</span>
-      </div>
-      <div class="stat-card amber">
-        <span class="stat-label">Remaining</span>
-        <div class="stat-value" id="stat-remaining">328</div>
-        <span class="stat-subtext" id="stat-remaining-hrs">656 Hours Left</span>
-      </div>
-      <div class="stat-card purple">
-        <span class="stat-label">Progress</span>
-        <div class="stat-value" id="stat-percentage">0.0%</div>
-        <div class="progress-bar-container" style="margin-top: 6px;">
-          <div class="progress-bar-fill" id="stat-progress-fill" style="width: 0%;"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Subject Wise Breakdown -->
-    <div class="subject-grid">
-      <!-- Physics -->
-      <div class="subject-card">
-        <div class="subject-header">
-          <span class="subject-title">⚡ Physics</span>
-          <span class="badge-sub phy">115 Lec</span>
-        </div>
-        <div class="subject-stats">
-          <span id="phy-count">0 / 115 Completed</span>
-          <span id="phy-pct">0%</span>
-        </div>
-        <div class="progress-bar-container">
-          <div class="progress-bar-fill phy" id="phy-bar"></div>
-        </div>
-      </div>
-      <!-- Mathematics -->
-      <div class="subject-card">
-        <div class="subject-header">
-          <span class="subject-title">📐 Maths</span>
-          <span class="badge-sub mat">96 Lec</span>
-        </div>
-        <div class="subject-stats">
-          <span id="mat-count">0 / 96 Completed</span>
-          <span id="mat-pct">0%</span>
-        </div>
-        <div class="progress-bar-container">
-          <div class="progress-bar-fill mat" id="mat-bar"></div>
-        </div>
-      </div>
-      <!-- Organic Chemistry -->
-      <div class="subject-card">
-        <div class="subject-header">
-          <span class="subject-title">🧪 Organic Chem</span>
-          <span class="badge-sub oc">70 Lec</span>
-        </div>
-        <div class="subject-stats">
-          <span id="oc-count">0 / 70 Completed</span>
-          <span id="oc-pct">0%</span>
-        </div>
-        <div class="progress-bar-container">
-          <div class="progress-bar-fill oc" id="oc-bar"></div>
-        </div>
-      </div>
-      <!-- Physical Chemistry -->
-      <div class="subject-card">
-        <div class="subject-header">
-          <span class="subject-title">⚗️ Physical Chem</span>
-          <span class="badge-sub pc">46 Lec</span>
-        </div>
-        <div class="subject-stats">
-          <span id="pc-count">0 / 46 Completed</span>
-          <span id="pc-pct">0%</span>
-        </div>
-        <div class="progress-bar-container">
-          <div class="progress-bar-fill pc" id="pc-bar"></div>
-        </div>
-      </div>
-      <!-- Inorganic Chemistry -->
-      <div class="subject-card">
-        <div class="subject-header">
-          <span class="subject-title">🔬 Inorganic Chem</span>
-          <span class="badge-sub ioc">1 Lec</span>
-        </div>
-        <div class="subject-stats">
-          <span id="ioc-count">0 / 1 Completed</span>
-          <span id="ioc-pct">0%</span>
-        </div>
-        <div class="progress-bar-container">
-          <div class="progress-bar-fill ioc" id="ioc-bar"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 4-Month Target & Daily Study Plan -->
-    <div class="dual-grid">
-      
-      <!-- Goal Panel -->
-      <div class="dashboard-panel">
-        <div class="panel-header">
-          <div class="panel-title">🎯 4-Month JEE Backlog Goal (120 Days)</div>
-          <span class="date-badge" id="current-date-display">Today</span>
-        </div>
-        <div class="goal-metrics">
-          <div class="metric-box">
-            <div class="metric-box-title">Required Pace (Daily)</div>
-            <div class="metric-box-value" id="goal-req-day">2.73 Lec/day</div>
-          </div>
-          <div class="metric-box">
-            <div class="metric-box-title">Actual Pace (Avg)</div>
-            <div class="metric-box-value" id="goal-act-day">0.0 Lec/day</div>
-          </div>
-          <div class="metric-box">
-            <div class="metric-box-title">Required Pace (Weekly)</div>
-            <div class="metric-box-value" id="goal-req-wk">19.1 Lec/wk</div>
-          </div>
-          <div class="metric-box">
-            <div class="metric-box-title">Est. Finish Date</div>
-            <div class="metric-box-value" id="goal-finish-date" style="font-size: 1.05rem;">--</div>
-          </div>
-        </div>
-        <div class="motivation-banner" id="motivation-text">
-          🔥 Consistency > Motivation. Clear 2 backlog lectures today!
-        </div>
-      </div>
-
-      <!-- Daily Routine Checklist -->
-      <div class="dashboard-panel">
-        <div class="panel-header">
-          <div class="panel-title">📅 Daily 10-Hour Execution Routine</div>
-          <div class="daily-target-control" style="margin-bottom:0; padding:4px 10px;">
-            <label style="font-size:0.75rem; font-weight:700;">Target:</label>
-            <input type="number" id="daily-target-input" min="1" max="10" value="2" />
-          </div>
-        </div>
-        <ul class="checklist" id="daily-checklist">
-          <li class="checklist-item" data-task="live1">
-            <span>🔴 Live Lecture 1</span> <strong>2 Hours</strong>
-          </li>
-          <li class="checklist-item" data-task="live2">
-            <span>🔴 Live Lecture 2</span> <strong>2 Hours</strong>
-          </li>
-          <li class="checklist-item" data-task="backlog1">
-            <span>🟢 Backlog Lecture 1</span> <strong>2 Hours</strong>
-          </li>
-          <li class="checklist-item" data-task="backlog2">
-            <span>🟢 Backlog Lecture 2</span> <strong>2 Hours</strong>
-          </li>
-          <li class="checklist-item" data-task="dpp">
-            <span>✍️ Questions / DPP Practice</span> <strong>1 Hour</strong>
-          </li>
-          <li class="checklist-item" data-task="revision">
-            <span>🔄 Daily Revision & Short Notes</span> <strong>1 Hour</strong>
-          </li>
-        </ul>
-      </div>
-
-    </div>
-
-    <!-- Filters & Search Toolbar -->
-    <div class="controls-panel">
-      <div class="filter-row">
-        <div class="search-box">
-          <input type="text" id="search-input" placeholder="🔍 Search by ID, subject, chapter, title, notes..." />
-        </div>
-        <div class="filter-group" id="subject-filters">
-          <button class="filter-chip active" data-filter="all">All Subjects</button>
-          <button class="filter-chip" data-filter="Physics">Physics</button>
-          <button class="filter-chip" data-filter="Maths">Maths</button>
-          <button class="filter-chip" data-filter="Organic Chemistry">Organic</button>
-          <button class="filter-chip" data-filter="Physical Chemistry">Physical</button>
-          <button class="filter-chip" data-filter="Inorganic Chemistry">Inorganic</button>
-        </div>
-      </div>
-      <div class="filter-row">
-        <div class="filter-group" id="status-filters">
-          <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); margin-right: 4px;">STATUS:</span>
-          <button class="filter-chip active" data-status="all">All</button>
-          <button class="filter-chip" data-status="completed">Completed Only</button>
-          <button class="filter-chip" data-status="pending">Pending Only</button>
-        </div>
-        <div class="filter-group">
-          <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); margin-right: 4px;">SORT:</span>
-          <select id="sort-select" class="status-select">
-            <option value="id-asc">Lecture ID (Default)</option>
-            <option value="subject">Subject</option>
-            <option value="completed-first">Completed First</option>
-            <option value="pending-first">Pending First</option>
-          </select>
-        </div>
-      </div>
-    </div>
-
-    <!-- Master Interactive Lecture Table -->
-    <div class="table-container">
-      <div class="table-scroll">
-        <table>
-          <thead>
-            <tr>
-              <th style="width: 40px; text-align: center;">#</th>
-              <th style="width: 90px;">Subject</th>
-              <th style="width: 180px;">Chapter / Topic</th>
-              <th style="width: 90px;">Lecture ID</th>
-              <th style="min-width: 220px;">Lecture Title</th>
-              <th style="width: 75px; text-align: center;">Duration</th>
-              <th style="width: 120px;">Status</th>
-              <th style="width: 60px; text-align: center;">Done</th>
-              <th style="width: 110px;">Date</th>
-              <th style="min-width: 200px;">Notes</th>
-            </tr>
-          </thead>
-          <tbody id="lecture-table-body">
-            <!-- Dynamic Injection of 328 Rows -->
-          </tbody>
-        </table>
-      </div>
-      <div class="table-footer-info">
-        <span id="showing-count-text">Showing 328 of 328 lectures</span>
-        <span>Auto-saved to Browser LocalStorage</span>
-      </div>
-    </div>
-
-  </div>
-
-  <script>
-    /* --- CONSTANTS & CONFIGURATION --- */
-    const STORAGE_KEY = "JEE_2027_TRACKER_DATA";
-    const SETTINGS_KEY = "JEE_2027_TRACKER_SETTINGS";
-    const TOTAL_DAYS_PLAN = 120;
-
-    // Breakdown Definitions
-    const SUBJECT_SPECS = [
-      { name: "Physics", prefix: "PHY", count: 115, class: "phy" },
-      { name: "Maths", prefix: "MAT", count: 96, class: "mat" },
-      { name: "Organic Chemistry", prefix: "OC", count: 70, class: "oc" },
-      { name: "Physical Chemistry", prefix: "PC", count: 46, class: "pc" },
-      { name: "Inorganic Chemistry", prefix: "IOC", count: 1, class: "ioc" }
-    ];
-
-    const MOTIVATIONAL_QUOTES = [
-      "🔥 Consistency > Motivation. Clear 2 backlog lectures today!",
-      "⚡ Small daily efforts compound into top AIR ranks.",
-      "🎯 Focus on 1 lecture at a time. The mountain will move.",
-      "🧠 Concepts tested at JEE need patience and rigor. Keep going!",
-      "🏆 Your future self at IIT will thank you for today's grind."
-    ];
-
-    /* --- INITIAL STATE FACTORY --- */
-    function generateInitialLectures() {
-      const lectures = [];
-      let globalIndex = 1;
-
-      SUBJECT_SPECS.forEach(sub => {
-        for (let i = 1; i <= sub.count; i++) {
-          const numStr = String(i).padStart(3, "0");
-          lectures.push({
-            index: globalIndex++,
-            id: `${sub.prefix}-${numStr}`,
-            subject: sub.name,
-            chapter: "Not Added",
-            title: `Lecture ${numStr}`,
-            duration: "2:00",
-            status: "Not Started",
-            completed: false,
-            completionDate: "",
-            notes: ""
-          });
-        }
-      });
-      return lectures;
-    }
-
-    /* --- APPLICATION STATE --- */
-    let trackerData = {
-      startDate: new Date().toISOString(),
-      dailyTarget: 2,
-      dailyChecklist: {
-        live1: false,
-        live2: false,
-        backlog1: false,
-        backlog2: false,
-        dpp: false,
-        revision: false
-      },
-      lectures: generateInitialLectures()
-    };
-
-    let activeSubjectFilter = "all";
-    let activeStatusFilter = "all";
-    let activeSearchQuery = "";
-    let activeSort = "id-asc";
-
-    /* --- PERSISTENCE --- */
-    function loadData() {
-      try {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        if (stored) {
-          const parsed = JSON.parse(stored);
-          // Defensive validation: merge stored fields with initial structure to prevent schema crashes
-          if (parsed && Array.isArray(parsed.lectures) && parsed.lectures.length === 328) {
-            trackerData = parsed;
-          }
-        }
-      } catch (e) {
-        console.error("Could not load local storage data:", e);
-      }
-
-      // Load Settings (theme)
-      const settings = localStorage.getItem(SETTINGS_KEY);
-      if (settings) {
-        const { theme } = JSON.parse(settings);
-        if (theme === "dark") {
-          document.documentElement.setAttribute("data-theme", "dark");
-          document.getElementById("theme-toggle").textContent = "☀️ Light Mode";
-        }
-      }
-    }
-
-    function saveData() {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(trackerData));
-        updateDashboard();
-      } catch (e) {
-        console.error("Could not save to local storage:", e);
-      }
-    }
-
-    /* --- DURATION HELPER --- */
-    function parseDurationHours(durationStr) {
-      if (!durationStr || typeof durationStr !== "string") return 2.0;
-      const parts = durationStr.split(":");
-      if (parts.length === 2) {
-        const hrs = parseFloat(parts[0]) || 0;
-        const mins = parseFloat(parts[1]) || 0;
-        return hrs + (mins / 60);
-      }
-      const val = parseFloat(durationStr);
-      return isNaN(val) ? 2.0 : val;
-    }
-
-    /* --- CORE STATS & CALCULATIONS --- */
-    function updateDashboard() {
-      const lectures = trackerData.lectures;
-      const totalLectures = lectures.length;
-      const completedLectures = lectures.filter(l => l.completed).length;
-      const remainingLectures = totalLectures - completedLectures;
-      const overallPct = ((completedLectures / totalLectures) * 100).toFixed(1);
-
-      // Duration calculations
-      let completedHrs = 0;
-      let remainingHrs = 0;
-      lectures.forEach(l => {
-        const h = parseDurationHours(l.duration);
-        if (l.completed) completedHrs += h;
-        else remainingHrs += h;
-      });
-
-      // Update Top Metrics
-      document.getElementById("stat-total").textContent = totalLectures;
-      document.getElementById("stat-completed").textContent = completedLectures;
-      document.getElementById("stat-remaining").textContent = remainingLectures;
-      document.getElementById("stat-percentage").textContent = `${overallPct}%`;
-      document.getElementById("stat-progress-fill").style.width = `${overallPct}%`;
-      document.getElementById("stat-completed-hrs").textContent = `${completedHrs.toFixed(1)} Hours Cleared`;
-      document.getElementById("stat-remaining-hrs").textContent = `${remainingHrs.toFixed(1)} Hours Left`;
-
-      // Update Subject Breakdowns
-      SUBJECT_SPECS.forEach(sub => {
-        const subLectures = lectures.filter(l => l.subject === sub.name);
-        const subCompleted = subLectures.filter(l => l.completed).length;
-        const subPct = ((subCompleted / sub.count) * 100).toFixed(1);
-        
-        const countEl = document.getElementById(`${sub.class}-count`);
-        const pctEl = document.getElementById(`${sub.class}-pct`);
-        const barEl = document.getElementById(`${sub.class}-bar`);
-        
-        if (countEl) countEl.textContent = `${subCompleted} / ${sub.count} Completed`;
-        if (pctEl) pctEl.textContent = `${subPct}%`;
-        if (barEl) barEl.style.width = `${subPct}%`;
-      });
-
-      // 4-Month Target Math
-      const start = new Date(trackerData.startDate || new Date());
-      const now = new Date();
-      const elapsedDays = Math.max(1, Math.floor((now - start) / (1000 * 60 * 60 * 24)) + 1);
-      const daysLeft = Math.max(1, TOTAL_DAYS_PLAN - elapsedDays);
-      
-      const reqDaily = (remainingLectures / daysLeft).toFixed(2);
-      const reqWeekly = (reqDaily * 7).toFixed(1);
-      const actDaily = (completedLectures / elapsedDays).toFixed(2);
-
-      document.getElementById("goal-req-day").textContent = `${reqDaily} Lec/day`;
-      document.getElementById("goal-act-day").textContent = `${actDaily} Lec/day`;
-      document.getElementById("goal-req-wk").textContent = `${reqWeekly} Lec/wk`;
-
-      if (parseFloat(actDaily) > 0) {
-        const daysToFinish = Math.ceil(remainingLectures / parseFloat(actDaily));
-        const finishDate = new Date();
-        finishDate.setDate(finishDate.getDate() + daysToFinish);
-        document.getElementById("goal-finish-date").textContent = finishDate.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
-      } else {
-        document.getElementById("goal-finish-date").textContent = "Start Clearing";
-      }
-
-      // Random motivation refresh based on progress
-      const qIndex = completedLectures % MOTIVATIONAL_QUOTES.length;
-      document.getElementById("motivation-text").textContent = MOTIVATIONAL_QUOTES[qIndex];
-    }
-
-    /* --- RENDER TABLE --- */
-    function renderLectures() {
-      const tbody = document.getElementById("lecture-table-body");
-      tbody.innerHTML = "";
-
-      let filtered = trackerData.lectures.filter(lec => {
-        // Subject Filter
-        if (activeSubjectFilter !== "all" && lec.subject !== activeSubjectFilter) return false;
-        
-        // Status Filter
-        if (activeStatusFilter === "completed" && !lec.completed) return false;
-        if (activeStatusFilter === "pending" && lec.completed) return false;
-
-        // Search Query
-        if (activeSearchQuery.trim() !== "") {
-          const q = activeSearchQuery.toLowerCase();
-          const matchId = lec.id.toLowerCase().includes(q);
-          const matchSub = lec.subject.toLowerCase().includes(q);
-          const matchChap = (lec.chapter || "").toLowerCase().includes(q);
-          const matchTitle = (lec.title || "").toLowerCase().includes(q);
-          const matchNotes = (lec.notes || "").toLowerCase().includes(q);
-          const matchStatus = (lec.status || "").toLowerCase().includes(q);
-          return matchId || matchSub || matchChap || matchTitle || matchNotes || matchStatus;
-        }
-        return true;
-      });
-
-      // Sort
-      filtered.sort((a, b) => {
-        if (activeSort === "subject") return a.subject.localeCompare(b.subject);
-        if (activeSort === "completed-first") return (b.completed === a.completed) ? a.index - b.index : (b.completed ? 1 : -1);
-        if (activeSort === "pending-first") return (a.completed === b.completed) ? a.index - b.index : (a.completed ? 1 : -1);
-        return a.index - b.index; // default id-asc
-      });
-
-      document.getElementById("showing-count-text").textContent = `Showing ${filtered.length} of 328 lectures`;
-
-      if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="10" class="no-results">No lectures found matching the filter/search criteria.</td></tr>`;
-        return;
-      }
-
-      const fragment = document.createDocumentFragment();
-
-      filtered.forEach(lec => {
-        const tr = document.createElement("tr");
-        if (lec.completed) tr.classList.add("is-completed");
-
-        const subSpec = SUBJECT_SPECS.find(s => s.name === lec.subject) || { class: "phy" };
-
-        tr.innerHTML = `
-          <td style="text-align:center; font-size:0.75rem; color:var(--text-muted); font-weight:600;">${lec.index}</td>
-          <td><span class="badge-sub ${subSpec.class}">${lec.subject.split(" ")[0]}</span></td>
-          <td>
-            <input type="text" class="editable-cell" data-id="${lec.id}" data-field="chapter" value="${escapeHtml(lec.chapter)}" placeholder="Enter chapter..." />
-          </td>
-          <td class="col-id">${lec.id}</td>
-          <td>
-            <input type="text" class="editable-cell" data-id="${lec.id}" data-field="title" value="${escape shameHtml(lec.title)}" />
-          </td>
-          <td>
-            <input type="text" class="editable-cell duration-cell" data-id="${lec.id}" data-field="duration" value="${escapeHtml(lec.duration)}" />
-          </td>
-          <td>
-            <select class="status-select" data-id="${lec.id}">
-              <option value="Not Started" ${lec.status === 'Not Started' ? 'selected' : ''}>🔴 Not Started</option>
-              <option value="In Progress" ${lec.status === 'In Progress' ? 'selected' : ''}>🟡 In Progress</option>
-              <option value="Completed" ${lec.status === 'Completed' ? 'selected' : ''}>🟢 Completed</option>
-            </select>
-          </td>
-          <td class="checkbox-wrapper">
-            <input type="checkbox" class="custom-checkbox" data-id="${lec.id}" ${lec.completed ? 'checked' : ''} />
-          </td>
-          <td>
-            <span class="date-badge">${lec.completionDate || "—"}</span>
-          </td>
-          <td>
-            <input type="text" class="editable-cell" data-id="${lec.id}" data-field="notes" value="${escapeHtml(lec.notes)}" placeholder="Add quick note / formula..." />
-          </td>
-        `;
-        fragment.appendChild(tr);
-      });
-
-      tbody.appendChild(fragment);
-    }
-
-    function escapeHtml(str) {
-      if (!str) return "";
-      return String(str).replace(/"/g, "&quot;").replace(/'/g, "&#39;");
-    }
-
-    function escapeShameHtml(str) {
-      return escapeHtml(str);
-    }
-
-    /* --- EVENT HANDLERS --- */
-    function setupEventDelegation() {
-      const tbody = document.getElementById("lecture-table-body");
-
-      // Checkbox changes
-      tbody.addEventListener("change", (e) => {
-        if (e.target.classList.contains("custom-checkbox")) {
-          const lecId = e.target.getAttribute("data-id");
-          const checked = e.target.checked;
-          const lecture = trackerData.lectures.find(l => l.id === lecId);
-          if (lecture) {
-            lecture.completed = checked;
-            if (checked) {
-              lecture.status = "Completed";
-              lecture.completionDate = new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" });
-            } else {
-              lecture.status = "Not Started";
-              lecture.completionDate = "";
-            }
-            saveData();
-            renderLectures();
-          }
-        }
-
-        // Status select dropdown
-        if (e.target.classList.contains("status-select")) {
-          const lecId = e.target.getAttribute("data-id");
-          const val = e.target.value;
-          const lecture = trackerData.lectures.find(l => l.id === lecId);
-          if (lecture) {
-            lecture.status = val;
-            if (val === "Completed") {
-              lecture.completed = true;
-              if (!lecture.completionDate) {
-                lecture.completionDate = new Date().toLocaleDateString shame shame shame shame shame shame shame shame shame shame shame shame shame shame shame shameHere is the complete, production-ready, single-file `index.html` file designed with a modern glassmorphism UI, comprehensive real-time calculations, automated local persistence, full search/filter capabilities, responsive table layout, and complete initialization for all 328 lectures.
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>JEE 2027 — 4 Month Lecture Backlog Tracker</title>
-  <link rel="preconnect" href="[https://fonts.googleapis.com](https://fonts.googleapis.com)">
-  <link rel="preconnect" href="[https://fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
-  <link href="[https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap](https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap)" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #0b0f19;
@@ -1338,7 +83,6 @@
       gap: 24px;
     }
 
-    /* HEADER & HERO */
     header {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -1413,6 +157,7 @@
       align-items: center;
       gap: 8px;
       transition: var(--transition);
+      user-select: none;
     }
 
     .btn:hover {
@@ -1441,7 +186,6 @@
       color: #fff;
     }
 
-    /* STATS GRID */
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -1481,7 +225,6 @@
       color: var(--text-muted);
     }
 
-    /* SUBJECT METRICS */
     .subject-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -1539,7 +282,6 @@
       transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    /* SECTIONS: 4-MONTH GOAL & DAILY TRACKER */
     .tracker-panels-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -1607,7 +349,6 @@
       margin-top: 4px;
     }
 
-    /* DAILY STUDY SCHEDULE CHECKLIST */
     .schedule-list {
       display: flex;
       flex-direction: column;
@@ -1652,7 +393,6 @@
       color: var(--text-muted);
     }
 
-    /* CONTROLS (SEARCH, FILTERS, VIEW MODES) */
     .controls-wrapper {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -1742,7 +482,6 @@
       border-color: var(--primary);
     }
 
-    /* TABLE SECTION */
     .table-container {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -1876,18 +615,16 @@
 
     .custom-checkbox {
       position: relative;
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
       cursor: pointer;
       accent-color: var(--success);
-      transform: scale(1.15);
       margin: 0 auto;
       display: block;
     }
 
     .notes-input {
       min-width: 140px;
-      resize: vertical;
       font-size: 0.8rem;
     }
 
@@ -1898,7 +635,6 @@
       white-space: nowrap;
     }
 
-    /* FOOTER MOTIVATION */
     .footer-motivation {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -1951,7 +687,6 @@
       color: var(--primary);
     }
 
-    /* NOTIFICATION TOAST */
     #toast {
       position: fixed;
       bottom: 24px;
@@ -1979,7 +714,6 @@
       transform: translateY(0);
     }
 
-    /* HIDDEN FILE INPUT */
     #fileInput {
       display: none;
     }
@@ -2006,7 +740,6 @@
 <body>
 
   <div class="container">
-    <!-- HERO HEADER -->
     <header>
       <div>
         <h1 class="hero-title">🚀 JEE 2027 — 4 Month Lecture Backlog Tracker</h1>
@@ -2014,15 +747,14 @@
         <span class="hero-badge">Created for Vijay Saharan</span>
       </div>
       <div class="header-actions">
-        <button class="btn" id="themeToggle" onclick="toggleTheme()">☀️ Light Mode</button>
-        <button class="btn" onclick="exportData()">💾 Export JSON</button>
-        <button class="btn" onclick="document.getElementById('fileInput').click()">📥 Import JSON</button>
-        <input type="file" id="fileInput" accept=".json" onchange="importData(event)" />
-        <button class="btn btn-danger" onclick="resetProgress()">⚠️ Reset</button>
+        <button class="btn" id="themeToggle">☀️ Light Mode</button>
+        <button class="btn" id="exportBtn">💾 Export JSON</button>
+        <button class="btn" id="importBtn">📥 Import JSON</button>
+        <input type="file" id="fileInput" accept=".json" />
+        <button class="btn btn-danger" id="resetBtn">⚠️ Reset</button>
       </div>
     </header>
 
-    <!-- TOP OVERALL STATS -->
     <div class="stats-grid">
       <div class="stat-card">
         <div class="stat-title">Total Lectures</div>
@@ -2048,9 +780,7 @@
       </div>
     </div>
 
-    <!-- SUBJECT METRICS CARDS -->
     <div class="subject-grid">
-      <!-- Physics -->
       <div class="subject-card">
         <div class="subject-card-header">
           <span class="subject-name" style="color: var(--phy-accent);">⚡ Physics</span>
@@ -2061,7 +791,6 @@
         </div>
       </div>
 
-      <!-- Maths -->
       <div class="subject-card">
         <div class="subject-card-header">
           <span class="subject-name" style="color: var(--mat-accent);">📐 Maths</span>
@@ -2072,7 +801,6 @@
         </div>
       </div>
 
-      <!-- Organic Chemistry -->
       <div class="subject-card">
         <div class="subject-card-header">
           <span class="subject-name" style="color: var(--oc-accent);">🧪 Organic Chem</span>
@@ -2083,7 +811,6 @@
         </div>
       </div>
 
-      <!-- Physical Chemistry -->
       <div class="subject-card">
         <div class="subject-card-header">
           <span class="subject-name" style="color: var(--pc-accent);">⚗️ Physical Chem</span>
@@ -2094,7 +821,6 @@
         </div>
       </div>
 
-      <!-- Inorganic Chemistry -->
       <div class="subject-card">
         <div class="subject-card-header">
           <span class="subject-name" style="color: var(--ioc-accent);">🔬 Inorganic Chem</span>
@@ -2106,13 +832,11 @@
       </div>
     </div>
 
-    <!-- TRACKER PANELS: 4-MONTH TARGET & DAILY STUDY PLAN -->
     <div class="tracker-panels-grid">
-      <!-- 4-Month Goal Tracker -->
       <div class="panel-card">
         <div class="panel-header">
           <div class="panel-title">🎯 4-Month Backlog Goal (120 Days)</div>
-          <button class="btn" style="padding: 4px 8px; font-size: 0.75rem;" onclick="configureStartDate()">📅 Set Start Date</button>
+          <button class="btn" id="startDateBtn" style="padding: 4px 8px; font-size: 0.75rem;">📅 Set Start Date</button>
         </div>
         <div class="goal-metrics">
           <div class="metric-box">
@@ -2137,42 +861,41 @@
           </div>
         </div>
         <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.4;">
-          *Pace calculations adjust continuously based on elapsed calendar time from your configured start date and completed lecture metrics.
+          *Pace calculates dynamically against elapsed calendar time from your start date.
         </div>
       </div>
 
-      <!-- Daily Routine Plan & Targets -->
       <div class="panel-card">
         <div class="panel-header">
           <div class="panel-title">📅 Today's Study Plan (10 Hours Target)</div>
           <div style="display: flex; align-items: center; gap: 6px;">
             <label style="font-size: 0.75rem; font-weight: 700;">Target:</label>
-            <input type="number" id="dailyGoalInput" value="4" min="1" max="10" style="width: 45px; background: var(--surface-elevated); border: 1px solid var(--border); color: var(--text); border-radius: 4px; padding: 2px 4px; font-weight: 700; text-align: center;" onchange="updateDailyTargetGoal(this.value)" />
+            <input type="number" id="dailyGoalInput" value="4" min="1" max="10" style="width: 45px; background: var(--surface-elevated); border: 1px solid var(--border); color: var(--text); border-radius: 4px; padding: 2px 4px; font-weight: 700; text-align: center;" />
           </div>
         </div>
 
-        <div class="schedule-list">
-          <div class="schedule-item" id="sched-0" onclick="toggleDailyRoutine(0)">
+        <div class="schedule-list" id="scheduleListContainer">
+          <div class="schedule-item" data-idx="0">
             <span class="schedule-meta">🔴 Live Lecture 1</span>
             <span class="schedule-duration">2.0 hrs</span>
           </div>
-          <div class="schedule-item" id="sched-1" onclick="toggleDailyRoutine(1)">
+          <div class="schedule-item" data-idx="1">
             <span class="schedule-meta">🔴 Live Lecture 2</span>
             <span class="schedule-duration">2.0 hrs</span>
           </div>
-          <div class="schedule-item" id="sched-2" onclick="toggleDailyRoutine(2)">
+          <div class="schedule-item" data-idx="2">
             <span class="schedule-meta">🟢 Backlog Lecture 1</span>
             <span class="schedule-duration">2.0 hrs</span>
           </div>
-          <div class="schedule-item" id="sched-3" onclick="toggleDailyRoutine(3)">
+          <div class="schedule-item" data-idx="3">
             <span class="schedule-meta">🟢 Backlog Lecture 2</span>
             <span class="schedule-duration">2.0 hrs</span>
           </div>
-          <div class="schedule-item" id="sched-4" onclick="toggleDailyRoutine(4)">
+          <div class="schedule-item" data-idx="4">
             <span class="schedule-meta">✍️ Questions / DPP Solving</span>
             <span class="schedule-duration">1.0 hr</span>
           </div>
-          <div class="schedule-item" id="sched-5" onclick="toggleDailyRoutine(5)">
+          <div class="schedule-item" data-idx="5">
             <span class="schedule-meta">🔄 Core Revision & Notes</span>
             <span class="schedule-duration">1.0 hr</span>
           </div>
@@ -2180,37 +903,35 @@
       </div>
     </div>
 
-    <!-- CONTROLS: SEARCH & FILTERS -->
     <div class="controls-wrapper">
       <div class="controls-top">
         <div class="search-input-wrapper">
           <span class="search-icon">🔍</span>
-          <input type="text" id="searchInput" class="search-input" placeholder="Search ID, Subject, Chapter, Title, Notes..." oninput="applyFilters()" />
+          <input type="text" id="searchInput" class="search-input" placeholder="Search ID, Subject, Chapter, Title, Notes..." />
         </div>
-        <button class="btn" onclick="clearFilters()">Reset Filters</button>
+        <button class="btn" id="clearFiltersBtn">Reset Filters</button>
       </div>
 
       <div style="display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between;">
-        <div class="filter-group">
+        <div class="filter-group" id="subjectFilterGroup">
           <span class="filter-label">Subject:</span>
-          <div class="filter-chip active" data-filter="subject" data-val="ALL" onclick="setSubjectFilter('ALL', this)">All</div>
-          <div class="filter-chip" data-filter="subject" data-val="Physics" onclick="setSubjectFilter('Physics', this)">Physics (115)</div>
-          <div class="filter-chip" data-filter="subject" data-val="Maths" onclick="setSubjectFilter('Maths', this)">Maths (96)</div>
-          <div class="filter-chip" data-filter="subject" data-val="Organic Chemistry" onclick="setSubjectFilter('Organic Chemistry', this)">Organic Chem (70)</div>
-          <div class="filter-chip" data-filter="subject" data-val="Physical Chemistry" onclick="setSubjectFilter('Physical Chemistry', this)">Physical Chem (46)</div>
-          <div class="filter-chip" data-filter="subject" data-val="Inorganic Chemistry" onclick="setSubjectFilter('Inorganic Chemistry', this)">Inorganic Chem (1)</div>
+          <div class="filter-chip active" data-val="ALL">All</div>
+          <div class="filter-chip" data-val="Physics">Physics (115)</div>
+          <div class="filter-chip" data-val="Maths">Maths (96)</div>
+          <div class="filter-chip" data-val="Organic Chemistry">Organic Chem (70)</div>
+          <div class="filter-chip" data-val="Physical Chemistry">Physical Chem (46)</div>
+          <div class="filter-chip" data-val="Inorganic Chemistry">Inorganic Chem (1)</div>
         </div>
 
-        <div class="filter-group">
+        <div class="filter-group" id="statusFilterGroup">
           <span class="filter-label">Status:</span>
-          <div class="filter-chip active" data-filter="status" data-val="ALL" onclick="setStatusFilter('ALL', this)">All</div>
-          <div class="filter-chip" data-filter="status" data-val="Completed" onclick="setStatusFilter('Completed', this)">Completed</div>
-          <div class="filter-chip" data-filter="status" data-val="Pending" onclick="setStatusFilter('Pending', this)">Pending</div>
+          <div class="filter-chip active" data-val="ALL">All</div>
+          <div class="filter-chip" data-val="Completed">Completed</div>
+          <div class="filter-chip" data-val="Pending">Pending</div>
         </div>
       </div>
     </div>
 
-    <!-- MAIN INTERACTIVE TABLE -->
     <div class="table-container">
       <div class="table-responsive">
         <table id="lecturesTable">
@@ -2228,14 +949,11 @@
               <th style="width: 200px;">Notes</th>
             </tr>
           </thead>
-          <tbody id="lecturesTableBody">
-            <!-- Rendered by JavaScript dynamically -->
-          </tbody>
+          <tbody id="lecturesTableBody"></tbody>
         </table>
       </div>
     </div>
 
-    <!-- MOTIVATION FOOTER -->
     <div class="footer-motivation">
       <div class="quote-box">
         <div class="quote-text" id="randomQuote">"Consistency > Motivation. Every lecture completed is a step closer to IIT."</div>
@@ -2261,9 +979,6 @@
   <div id="toast">✅ Changes Saved!</div>
 
   <script>
-    /* ==========================================================
-       DATA DEFINITIONS & INITIALIZATION LOGIC
-       ========================================================== */
     const STORAGE_KEY = 'JEE_2027_BACKLOG_TRACKER_V1';
     const THEME_KEY = 'JEE_2027_THEME';
     const ROUTINE_KEY = 'JEE_2027_DAILY_ROUTINE';
@@ -2291,11 +1006,7 @@
     let currentStatusFilter = 'ALL';
     let searchKeyword = '';
     let dailyRoutineState = [false, false, false, false, false, false];
-    let trackerStartDate = null;
 
-    /**
-     * Generate default dataset for all 328 lectures with exact IDs
-     */
     function generateInitialDataset() {
       const data = [];
       let globalIndex = 1;
@@ -2322,42 +1033,31 @@
       return data;
     }
 
-    /**
-     * Initial startup sequence
-     */
-    function initializeTracker() {
-      loadData();
-      initTheme();
-      initDates();
-      initDailyRoutine();
-      renderLectures();
-      updateAllProgressMetrics();
-      showRandomQuote();
-    }
-
-    /* ==========================================================
-       STORAGE & BACKUP OPERATIONS
-       ========================================================== */
-    function saveData() {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(lectureDatabase));
-        showToast("Progress Saved Automatically");
-      } catch (e) {
-        console.error("Storage error:", e);
-      }
-    }
-
     function loadData() {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         try {
-          lectureDatabase = JSON.parse(saved);
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length === 328) {
+            lectureDatabase = parsed;
+          } else {
+            lectureDatabase = generateInitialDataset();
+          }
         } catch (e) {
           lectureDatabase = generateInitialDataset();
         }
       } else {
         lectureDatabase = generateInitialDataset();
         saveData();
+      }
+    }
+
+    function saveData() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(lectureDatabase));
+        showToast("Progress Saved Automatically");
+      } catch (e) {
+        console.error("Storage error:", e);
       }
     }
 
@@ -2401,10 +1101,10 @@
             updateAllProgressMetrics();
             showToast("Backup restored successfully!");
           } else {
-            alert("Invalid JSON format for tracker backup.");
+            alert("Invalid backup file structure.");
           }
         } catch (err) {
-          alert("Error parsing JSON file.");
+          alert("Error parsing backup JSON.");
         }
       };
       reader.readAsText(file);
@@ -2412,8 +1112,7 @@
     }
 
     function resetProgress() {
-      const confirmReset = confirm("Are you sure you want to reset all progress? This cannot be undone unless you have an exported backup.");
-      if (confirmReset) {
+      if (confirm("Are you sure you want to reset all progress? This action cannot be undone unless you have a backup.")) {
         lectureDatabase = generateInitialDataset();
         dailyRoutineState = [false, false, false, false, false, false];
         localStorage.removeItem(ROUTINE_KEY);
@@ -2421,13 +1120,10 @@
         renderLectures();
         initDailyRoutine();
         updateAllProgressMetrics();
-        showToast("Tracker has been reset to defaults.");
+        showToast("Tracker has been reset.");
       }
     }
 
-    /* ==========================================================
-       RENDERING & ROW UPDATES
-       ========================================================== */
     function getSubjectBadgeClass(subject) {
       switch (subject) {
         case 'Physics': return 'badge-phy';
@@ -2439,17 +1135,19 @@
       }
     }
 
+    function escapeHtml(string) {
+      if (!string) return '';
+      return String(string).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
     function renderLectures() {
       const tbody = document.getElementById('lecturesTableBody');
       tbody.innerHTML = '';
 
       const filtered = lectureDatabase.filter(item => {
-        // Subject Filter
         if (currentSubjectFilter !== 'ALL' && item.subject !== currentSubjectFilter) return false;
-        // Status Filter
         if (currentStatusFilter === 'Completed' && !item.completed) return false;
         if (currentStatusFilter === 'Pending' && item.completed) return false;
-        // Search Filter
         if (searchKeyword) {
           const kw = searchKeyword.toLowerCase();
           const matchId = item.id.toLowerCase().includes(kw);
@@ -2476,33 +1174,28 @@
           <td style="text-align: center; color: var(--text-muted); font-size: 0.75rem;">${lec.idx}</td>
           <td><span class="badge-subject ${getSubjectBadgeClass(lec.subject)}">${lec.subject}</span></td>
           <td>
-            <input type="text" class="editable-input" value="${escapeHtml(lec.chapter)}" 
-                   placeholder="Enter chapter..." onchange="updateLectureField('${lec.id}', 'chapter', this.value)" />
+            <input type="text" class="editable-input cell-chapter" data-id="${lec.id}" value="${escapeHtml(lec.chapter)}" placeholder="Enter chapter..." />
           </td>
           <td class="cell-id">${lec.id}</td>
           <td>
-            <input type="text" class="editable-input" value="${escapeHtml(lec.title)}" 
-                   onchange="updateLectureField('${lec.id}', 'title', this.value)" />
+            <input type="text" class="editable-input cell-title" data-id="${lec.id}" value="${escapeHtml(lec.title)}" />
           </td>
           <td>
-            <input type="text" class="editable-input duration-input" value="${escapeHtml(lec.duration)}" 
-                   placeholder="2:00" onchange="updateLectureField('${lec.id}', 'duration', this.value)" />
+            <input type="text" class="editable-input duration-input cell-duration" data-id="${lec.id}" value="${escapeHtml(lec.duration)}" placeholder="2:00" />
           </td>
           <td>
-            <select class="select-status" onchange="updateLectureStatusManual('${lec.id}', this.value)">
+            <select class="select-status cell-status" data-id="${lec.id}">
               <option value="Not Started" ${lec.status === 'Not Started' ? 'selected' : ''}>🔴 Not Started</option>
               <option value="In Progress" ${lec.status === 'In Progress' ? 'selected' : ''}>🟡 In Progress</option>
               <option value="Completed" ${lec.status === 'Completed' ? 'selected' : ''}>🟢 Completed</option>
             </select>
           </td>
           <td style="text-align: center;">
-            <input type="checkbox" class="custom-checkbox" ${lec.completed ? 'checked' : ''} 
-                   onchange="toggleLecture('${lec.id}', this.checked)" />
+            <input type="checkbox" class="custom-checkbox cell-checkbox" data-id="${lec.id}" ${lec.completed ? 'checked' : ''} />
           </td>
           <td class="date-display">${lec.completionDate || '—'}</td>
           <td>
-            <input type="text" class="editable-input notes-input" value="${escapeHtml(lec.notes)}" 
-                   placeholder="Add notes..." onchange="updateLectureField('${lec.id}', 'notes', this.value)" />
+            <input type="text" class="editable-input notes-input cell-notes" data-id="${lec.id}" value="${escapeHtml(lec.notes)}" placeholder="Add notes..." />
           </td>
         `;
         fragment.appendChild(tr);
@@ -2511,68 +1204,66 @@
       tbody.appendChild(fragment);
     }
 
-    function escapeHtml(string) {
-      if (!string) return '';
-      return String(string).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-    }
+    function setupTableEventListeners() {
+      const tbody = document.getElementById('lecturesTableBody');
 
-    /* ==========================================================
-       INTERACTION & FIELD UPDATES
-       ========================================================== */
-    function toggleLecture(id, isChecked) {
-      const item = lectureDatabase.find(l => l.id === id);
-      if (!item) return;
+      tbody.addEventListener('change', (e) => {
+        const id = e.target.getAttribute('data-id');
+        if (!id) return;
 
-      item.completed = isChecked;
-      if (isChecked) {
-        item.status = 'Completed';
-        const today = new Date();
-        item.completionDate = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
-      } else {
-        item.status = 'Not Started';
-        item.completionDate = '';
-      }
+        const item = lectureDatabase.find(l => l.id === id);
+        if (!item) return;
 
-      saveData();
-      renderLectures();
-      updateAllProgressMetrics();
-    }
-
-    function updateLectureStatusManual(id, newStatus) {
-      const item = lectureDatabase.find(l => l.id === id);
-      if (!item) return;
-
-      item.status = newStatus;
-      if (newStatus === 'Completed') {
-        item.completed = true;
-        if (!item.completionDate) {
-          const today = new Date();
-          item.completionDate = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+        if (e.target.classList.contains('cell-checkbox')) {
+          item.completed = e.target.checked;
+          if (e.target.checked) {
+            item.status = 'Completed';
+            const today = new Date();
+            item.completionDate = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+          } else {
+            item.status = 'Not Started';
+            item.completionDate = '';
+          }
+          saveData();
+          renderLectures();
+          updateAllProgressMetrics();
+        } 
+        else if (e.target.classList.contains('cell-status')) {
+          item.status = e.target.value;
+          if (e.target.value === 'Completed') {
+            item.completed = true;
+            if (!item.completionDate) {
+              const today = new Date();
+              item.completionDate = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+            }
+          } else {
+            item.completed = false;
+            item.completionDate = '';
+          }
+          saveData();
+          renderLectures();
+          updateAllProgressMetrics();
+        } 
+        else if (e.target.classList.contains('cell-chapter')) {
+          item.chapter = e.target.value;
+          saveData();
+        } 
+        else if (e.target.classList.contains('cell-title')) {
+          item.title = e.target.value;
+          saveData();
+        } 
+        else if (e.target.classList.contains('cell-duration')) {
+          item.duration = e.target.value;
+          saveData();
+          updateAllProgressMetrics();
+        } 
+        else if (e.target.classList.contains('cell-notes')) {
+          item.notes = e.target.value;
+          saveData();
         }
-      } else {
-        item.completed = false;
-        item.completionDate = '';
-      }
-
-      saveData();
-      renderLectures();
-      updateAllProgressMetrics();
+      });
     }
 
-    function updateLectureField(id, field, value) {
-      const item = lectureDatabase.find(l => l.id === id);
-      if (!item) return;
-
-      item[field] = value;
-      saveData();
-      if (field === 'duration') {
-        updateAllProgressMetrics();
-      }
-    }
-
-    /* ==========================================================
-       PROGRESS & CALCULATION LOGIC
-       ========================================================== */
     function parseDurationToHours(durStr) {
       if (!durStr) return 2.0;
       const parts = durStr.split(':');
@@ -2591,7 +1282,6 @@
       let totalHours = 0;
       let completedHours = 0;
 
-      // Subject specific accumulators
       const subjectStats = {
         'Physics': { completed: 0, total: 115 },
         'Maths': { completed: 0, total: 96 },
@@ -2623,7 +1313,6 @@
       const remainingHours = Math.max(0, totalHours - completedHours);
       const overallPercent = ((completedLectures / totalLectures) * 100).toFixed(1);
 
-      // DOM Updates - Overall Cards
       document.getElementById('statTotal').innerText = totalLectures;
       document.getElementById('statTotalHours').innerText = `~${totalHours.toFixed(1)} Total Hrs`;
       document.getElementById('statCompleted').innerText = completedLectures;
@@ -2633,17 +1322,14 @@
       document.getElementById('statPercent').innerText = `${overallPercent}%`;
       document.getElementById('overallProgressBar').style.width = `${overallPercent}%`;
 
-      // Subject Cards
       updateSubjectCard('phy', subjectStats['Physics']);
       updateSubjectCard('mat', subjectStats['Maths']);
       updateSubjectCard('oc', subjectStats['Organic Chemistry']);
       updateSubjectCard('pc', subjectStats['Physical Chemistry']);
       updateSubjectCard('ioc', subjectStats['Inorganic Chemistry']);
 
-      // 4-Month Goal Tracker calculations
       updateGoalCalculations(completedLectures, remainingLectures);
 
-      // Footer
       document.getElementById('todayDoneCount').innerText = todayCompletedCount;
       document.getElementById('footerTotalDone').innerText = `${completedLectures} / ${totalLectures}`;
     }
@@ -2680,7 +1366,7 @@
 
     function configureStartDate() {
       const current = localStorage.getItem(START_DATE_KEY) || new Date().toISOString().slice(0, 10);
-      const input = prompt("Enter Backlog Tracker Start Date (YYYY-MM-DD):", current);
+      const input = prompt("Enter Tracker Start Date (YYYY-MM-DD):", current);
       if (input && !isNaN(Date.parse(input))) {
         localStorage.setItem(START_DATE_KEY, input);
         updateAllProgressMetrics();
@@ -2688,9 +1374,6 @@
       }
     }
 
-    /* ==========================================================
-       DAILY ROUTINE & CHECKLIST
-       ========================================================== */
     function initDailyRoutine() {
       const saved = localStorage.getItem(ROUTINE_KEY);
       if (saved) {
@@ -2701,7 +1384,7 @@
         }
       }
       dailyRoutineState.forEach((checked, idx) => {
-        const el = document.getElementById(`sched-${idx}`);
+        const el = document.querySelector(`.schedule-item[data-idx="${idx}"]`);
         if (el) {
           if (checked) el.classList.add('checked');
           else el.classList.remove('checked');
@@ -2713,61 +1396,6 @@
       if (targetInput) targetInput.value = savedDailyTarget;
     }
 
-    function toggleDailyRoutine(index) {
-      dailyRoutineState[index] = !dailyRoutineState[index];
-      localStorage.setItem(ROUTINE_KEY, JSON.stringify(dailyRoutineState));
-      initDailyRoutine();
-    }
-
-    function updateDailyTargetGoal(val) {
-      localStorage.setItem(DAILY_TARGET_KEY, val);
-      showToast("Daily target updated");
-    }
-
-    /* ==========================================================
-       FILTERS & SEARCH
-       ========================================================== */
-    function setSubjectFilter(subj, el) {
-      currentSubjectFilter = subj;
-      document.querySelectorAll('[data-filter="subject"]').forEach(c => c.classList.remove('active'));
-      el.classList.add('active');
-      renderLectures();
-    }
-
-    function setStatusFilter(status, el) {
-      currentStatusFilter = status;
-      document.querySelectorAll('[data-filter="status"]').forEach(c => c.classList.remove('active'));
-      el.classList.add('active');
-      renderLectures();
-    }
-
-    function applyFilters() {
-      searchKeyword = document.getElementById('searchInput').value.trim();
-      renderLectures();
-    }
-
-    function clearFilters() {
-      document.getElementById('searchInput').value = '';
-      searchKeyword = '';
-      currentSubjectFilter = 'ALL';
-      currentStatusFilter = 'ALL';
-      
-      document.querySelectorAll('[data-filter="subject"]').forEach(c => {
-        if (c.dataset.val === 'ALL') c.classList.add('active');
-        else c.classList.remove('active');
-      });
-
-      document.querySelectorAll('[data-filter="status"]').forEach(c => {
-        if (c.dataset.val === 'ALL') c.classList.add('active');
-        else c.classList.remove('active');
-      });
-
-      renderLectures();
-    }
-
-    /* ==========================================================
-       THEME & UTILITY HELPERS
-       ========================================================== */
     function initTheme() {
       const savedTheme = localStorage.getItem(THEME_KEY) || 'dark';
       document.documentElement.setAttribute('data-theme', savedTheme);
@@ -2789,12 +1417,6 @@
       }
     }
 
-    function initDates() {
-      if (!localStorage.getItem(START_DATE_KEY)) {
-        localStorage.setItem(START_DATE_KEY, new Date().toISOString().slice(0, 10));
-      }
-    }
-
     function showRandomQuote() {
       const el = document.getElementById('randomQuote');
       if (el) {
@@ -2812,8 +1434,89 @@
       }, 2200);
     }
 
-    // Initialize application upon loading
-    document.addEventListener('DOMContentLoaded', initializeTracker);
+    function setupMainControls() {
+      // Header Buttons
+      document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+      document.getElementById('exportBtn').addEventListener('click', exportData);
+      document.getElementById('importBtn').addEventListener('click', () => document.getElementById('fileInput').click());
+      document.getElementById('fileInput').addEventListener('change', importData);
+      document.getElementById('resetBtn').addEventListener('click', resetProgress);
+      document.getElementById('startDateBtn').addEventListener('click', configureStartDate);
+
+      // Search & Clear
+      const searchInput = document.getElementById('searchInput');
+      searchInput.addEventListener('input', () => {
+        searchKeyword = searchInput.value.trim();
+        renderLectures();
+      });
+
+      document.getElementById('clearFiltersBtn').addEventListener('click', () => {
+        searchInput.value = '';
+        searchKeyword = '';
+        currentSubjectFilter = 'ALL';
+        currentStatusFilter = 'ALL';
+        
+        document.querySelectorAll('#subjectFilterGroup .filter-chip').forEach(c => {
+          c.classList.toggle('active', c.getAttribute('data-val') === 'ALL');
+        });
+        document.querySelectorAll('#statusFilterGroup .filter-chip').forEach(c => {
+          c.classList.toggle('active', c.getAttribute('data-val') === 'ALL');
+        });
+
+        renderLectures();
+      });
+
+      // Subject Filter Chips
+      document.getElementById('subjectFilterGroup').addEventListener('click', (e) => {
+        if (e.target.classList.contains('filter-chip')) {
+          currentSubjectFilter = e.target.getAttribute('data-val');
+          document.querySelectorAll('#subjectFilterGroup .filter-chip').forEach(c => c.classList.remove('active'));
+          e.target.classList.add('active');
+          renderLectures();
+        }
+      });
+
+      // Status Filter Chips
+      document.getElementById('statusFilterGroup').addEventListener('click', (e) => {
+        if (e.target.classList.contains('filter-chip')) {
+          currentStatusFilter = e.target.getAttribute('data-val');
+          document.querySelectorAll('#statusFilterGroup .filter-chip').forEach(c => c.classList.remove('active'));
+          e.target.classList.add('active');
+          renderLectures();
+        }
+      });
+
+      // Daily Routine Schedule
+      document.getElementById('scheduleListContainer').addEventListener('click', (e) => {
+        const item = e.target.closest('.schedule-item');
+        if (item) {
+          const idx = parseInt(item.getAttribute('data-idx'), 10);
+          dailyRoutineState[idx] = !dailyRoutineState[idx];
+          localStorage.setItem(ROUTINE_KEY, JSON.stringify(dailyRoutineState));
+          initDailyRoutine();
+        }
+      });
+
+      // Daily Target Input
+      document.getElementById('dailyGoalInput').addEventListener('change', (e) => {
+        localStorage.setItem(DAILY_TARGET_KEY, e.target.value);
+        showToast("Daily target updated");
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadData();
+      initTheme();
+      if (!localStorage.getItem(START_DATE_KEY)) {
+        localStorage.setItem(START_DATE_KEY, new Date().toISOString().slice(0, 10));
+      }
+      initDailyRoutine();
+      setupMainControls();
+      setupTableEventListeners();
+      renderLectures();
+      updateAllProgressMetrics();
+      showRandomQuote();
+    });
   </script>
 </body>
 </html>
