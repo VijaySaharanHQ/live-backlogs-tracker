@@ -76,7 +76,7 @@
     }
 
     .container {
-      max-width: 1480px;
+      max-width: 1540px;
       margin: 0 auto;
       display: flex;
       flex-direction: column;
@@ -175,6 +175,16 @@
       background: var(--primary-hover);
     }
 
+    .btn-success {
+      background: var(--success);
+      color: #ffffff;
+      border-color: var(--success);
+    }
+
+    .btn-success:hover {
+      background: #059669;
+    }
+
     .btn-danger {
       background: var(--danger-bg);
       color: var(--danger);
@@ -190,10 +200,6 @@
       background: linear-gradient(135deg, #ec4899, #8b5cf6);
       color: #fff;
       border: none;
-    }
-
-    .btn-alert-test:hover {
-      opacity: 0.9;
     }
 
     .stats-grid {
@@ -361,7 +367,6 @@
       margin-top: 4px;
     }
 
-    /* Editable Daily Routine Plan */
     .schedule-list {
       display: flex;
       flex-direction: column;
@@ -473,7 +478,6 @@
       gap: 4px;
     }
 
-    /* Controls (Search & Filters) */
     .controls-wrapper {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -489,6 +493,7 @@
       display: flex;
       gap: 12px;
       flex-wrap: wrap;
+      align-items: center;
     }
 
     .search-input-wrapper {
@@ -563,7 +568,6 @@
       border-color: var(--primary);
     }
 
-    /* Table Section */
     .table-container {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -717,6 +721,24 @@
       white-space: nowrap;
     }
 
+    .row-delete-btn {
+      background: transparent;
+      border: none;
+      color: var(--danger);
+      cursor: pointer;
+      font-size: 0.95rem;
+      padding: 4px 6px;
+      border-radius: 6px;
+      opacity: 0.6;
+      transition: var(--transition);
+    }
+
+    .row-delete-btn:hover {
+      opacity: 1;
+      background: var(--danger-bg);
+      transform: scale(1.1);
+    }
+
     .footer-motivation {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -769,7 +791,7 @@
       color: var(--primary);
     }
 
-    /* 10-Minute Animated Alert Modal */
+    /* Modal Styling */
     .modal-overlay {
       position: fixed;
       top: 0;
@@ -784,7 +806,7 @@
       z-index: 9999;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.4s ease;
+      transition: opacity 0.3s ease;
     }
 
     .modal-overlay.active {
@@ -796,24 +818,62 @@
       background: var(--surface);
       border: 2px solid var(--primary);
       border-radius: 24px;
-      padding: 36px 32px;
+      padding: 32px;
       max-width: 520px;
       width: 90%;
       text-align: center;
       box-shadow: 0 0 50px rgba(99, 102, 241, 0.4);
-      transform: scale(0.85);
-      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform: scale(0.9);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
       position: relative;
-      animation: pulseGlow 2.5s infinite alternate;
     }
 
     .modal-overlay.active .modal-card {
       transform: scale(1);
     }
 
-    @keyframes pulseGlow {
-      0% { box-shadow: 0 0 30px rgba(99, 102, 241, 0.3); }
-      100% { box-shadow: 0 0 60px rgba(236, 72, 153, 0.5); }
+    .modal-card.form-modal {
+      text-align: left;
+      max-width: 560px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .form-group-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .form-group-full {
+      grid-column: span 2;
+    }
+
+    .form-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .form-input, .form-select {
+      width: 100%;
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 12px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.88rem;
+      outline: none;
+    }
+
+    .form-input:focus, .form-select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px var(--primary-glow);
     }
 
     .modal-icon {
@@ -871,7 +931,7 @@
       transform: translateY(20px);
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       pointer-events: none;
-      z-index: 1000;
+      z-index: 10000;
     }
 
     #toast.show {
@@ -889,6 +949,8 @@
       .hero-title { font-size: 1.35rem; }
       .stats-grid { grid-template-columns: repeat(2, 1fr); }
       .subject-grid { grid-template-columns: 1fr; }
+      .form-group-grid { grid-template-columns: 1fr; }
+      .form-group-full { grid-column: span 1; }
     }
   </style>
 </head>
@@ -908,6 +970,68 @@
       <div style="display: flex; gap: 10px; justify-content: center;">
         <button class="btn btn-primary" id="closeRecallBtn" style="padding: 10px 24px;">🔥 Let's Crack It!</button>
         <button class="btn" id="replayVoiceBtn" style="padding: 10px 14px;" title="Replay voice recall">🔊 Repeat Voice</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD LECTURE MODAL -->
+  <div class="modal-overlay" id="addLectureModal">
+    <div class="modal-card form-modal">
+      <div class="panel-header" style="margin-bottom: 0; padding-bottom: 8px;">
+        <div class="panel-title">➕ Add New Lecture Entry</div>
+        <button class="btn" id="closeAddLectureModalBtn" style="padding: 2px 8px;">✕</button>
+      </div>
+      
+      <div class="form-group-grid">
+        <div>
+          <label class="form-label">Subject</label>
+          <select id="newLectureSubject" class="form-select">
+            <option value="Physics">Physics</option>
+            <option value="Maths">Maths</option>
+            <option value="Organic Chemistry">Organic Chemistry</option>
+            <option value="Physical Chemistry">Physical Chemistry</option>
+            <option value="Inorganic Chemistry">Inorganic Chemistry</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="form-label">Lecture ID</label>
+          <input type="text" id="newLectureId" class="form-input" placeholder="e.g., PHY-116" />
+        </div>
+
+        <div class="form-group-full">
+          <label class="form-label">Chapter / Topic</label>
+          <input type="text" id="newLectureChapter" class="form-input" placeholder="e.g., Rotational Dynamics, Calculus..." value="Not Added" />
+        </div>
+
+        <div class="form-group-full">
+          <label class="form-label">Lecture Title</label>
+          <input type="text" id="newLectureTitle" class="form-input" placeholder="e.g., Lecture 116 or Topic Overview" />
+        </div>
+
+        <div>
+          <label class="form-label">Duration</label>
+          <input type="text" id="newLectureDuration" class="form-input" value="2:00" placeholder="e.g. 2:00, 1:45" />
+        </div>
+
+        <div>
+          <label class="form-label">Initial Status</label>
+          <select id="newLectureStatus" class="form-select">
+            <option value="Not Started">🔴 Not Started</option>
+            <option value="In Progress">🟡 In Progress</option>
+            <option value="Completed">🟢 Completed</option>
+          </select>
+        </div>
+
+        <div class="form-group-full">
+          <label class="form-label">Notes (Optional)</label>
+          <input type="text" id="newLectureNotes" class="form-input" placeholder="Formulas, references, DPP links..." />
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px;">
+        <button class="btn" id="cancelAddLectureBtn">Cancel</button>
+        <button class="btn btn-success" id="saveNewLectureBtn">💾 Save Lecture</button>
       </div>
     </div>
   </div>
@@ -1055,9 +1179,7 @@
           </div>
         </div>
 
-        <div class="schedule-list" id="scheduleListContainer">
-          <!-- Dynamic editable tasks rendered here -->
-        </div>
+        <div class="schedule-list" id="scheduleListContainer"></div>
 
         <div class="schedule-actions">
           <button class="btn" id="addTaskBtn" style="padding: 4px 10px; font-size: 0.75rem;">+ Add Custom Task</button>
@@ -1066,25 +1188,26 @@
       </div>
     </div>
 
-    <!-- CONTROLS: SEARCH & FILTERS -->
+    <!-- CONTROLS: SEARCH, FILTERS & ADD LECTURE -->
     <div class="controls-wrapper">
       <div class="controls-top">
         <div class="search-input-wrapper">
           <span class="search-icon">🔍</span>
           <input type="text" id="searchInput" class="search-input" placeholder="Search ID, Subject, Chapter, Title, Notes..." />
         </div>
+        <button class="btn btn-primary" id="openAddLectureModalBtn">➕ Add Lecture</button>
         <button class="btn" id="clearFiltersBtn">Reset Filters</button>
       </div>
 
       <div style="display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between;">
         <div class="filter-group" id="subjectFilterGroup">
           <span class="filter-label">Subject:</span>
-          <div class="filter-chip active" data-val="ALL">All</div>
-          <div class="filter-chip" data-val="Physics">Physics (115)</div>
-          <div class="filter-chip" data-val="Maths">Maths (96)</div>
-          <div class="filter-chip" data-val="Organic Chemistry">Organic Chem (70)</div>
-          <div class="filter-chip" data-val="Physical Chemistry">Physical Chem (46)</div>
-          <div class="filter-chip" data-val="Inorganic Chemistry">Inorganic Chem (1)</div>
+          <div class="filter-chip active" data-val="ALL" id="chip-all-sub">All</div>
+          <div class="filter-chip" data-val="Physics" id="chip-phy">Physics</div>
+          <div class="filter-chip" data-val="Maths" id="chip-mat">Maths</div>
+          <div class="filter-chip" data-val="Organic Chemistry" id="chip-oc">Organic Chem</div>
+          <div class="filter-chip" data-val="Physical Chemistry" id="chip-pc">Physical Chem</div>
+          <div class="filter-chip" data-val="Inorganic Chemistry" id="chip-ioc">Inorganic Chem</div>
         </div>
 
         <div class="filter-group" id="statusFilterGroup">
@@ -1096,22 +1219,23 @@
       </div>
     </div>
 
-    <!-- MAIN INTERACTIVE TABLE (ALL 328 LECTURES) -->
+    <!-- MAIN INTERACTIVE TABLE -->
     <div class="table-container">
       <div class="table-responsive">
         <table id="lecturesTable">
           <thead>
             <tr>
-              <th style="width: 50px; text-align: center;">#</th>
+              <th style="width: 45px; text-align: center;">#</th>
               <th style="width: 130px;">Subject</th>
               <th style="width: 170px;">Chapter / Topic</th>
               <th style="width: 90px;">Lecture ID</th>
               <th>Lecture Title</th>
               <th style="width: 80px;">Duration</th>
               <th style="width: 120px;">Status</th>
-              <th style="width: 70px; text-align: center;">Done</th>
-              <th style="width: 110px;">Date</th>
-              <th style="width: 200px;">Notes</th>
+              <th style="width: 60px; text-align: center;">Done</th>
+              <th style="width: 100px;">Date</th>
+              <th style="width: 180px;">Notes</th>
+              <th style="width: 50px; text-align: center;">Action</th>
             </tr>
           </thead>
           <tbody id="lecturesTableBody"></tbody>
@@ -1211,7 +1335,7 @@
       if (saved) {
         try {
           const parsed = JSON.parse(saved);
-          if (Array.isArray(parsed) && parsed.length === 328) {
+          if (Array.isArray(parsed) && parsed.length > 0) {
             lectureDatabase = parsed;
           } else {
             lectureDatabase = generateInitialDataset();
@@ -1224,7 +1348,6 @@
         saveData();
       }
 
-      // Load Editable Routine
       const savedPlan = localStorage.getItem(ROUTINE_KEY);
       if (savedPlan) {
         try {
@@ -1238,8 +1361,15 @@
       }
     }
 
+    function reindexLectures() {
+      lectureDatabase.forEach((lec, index) => {
+        lec.idx = index + 1;
+      });
+    }
+
     function saveData() {
       try {
+        reindexLectures();
         localStorage.setItem(STORAGE_KEY, JSON.stringify(lectureDatabase));
         showToast("Progress Saved");
       } catch (e) {
@@ -1256,10 +1386,96 @@
       }
     }
 
+    /* --- ADD LECTURE FEATURE --- */
+    function getNextLectureIdForSubject(subjectName) {
+      const cfg = SUBJECT_CONFIG.find(s => s.name === subjectName) || { code: 'LEC' };
+      const subLectures = lectureDatabase.filter(l => l.subject === subjectName);
+      const nextNum = subLectures.length + 1;
+      return `${cfg.code}-${String(nextNum).padStart(3, '0')}`;
+    }
+
+    function openAddLectureModal() {
+      const subjectSelect = document.getElementById('newLectureSubject');
+      const nextId = getNextLectureIdForSubject(subjectSelect.value);
+      
+      document.getElementById('newLectureId').value = nextId;
+      document.getElementById('newLectureTitle').value = `Lecture ${nextId.split('-')[1] || '001'}`;
+      document.getElementById('newLectureChapter').value = "Not Added";
+      document.getElementById('newLectureDuration').value = "2:00";
+      document.getElementById('newLectureStatus').value = "Not Started";
+      document.getElementById('newLectureNotes').value = "";
+      
+      document.getElementById('addLectureModal').classList.add('active');
+    }
+
+    function closeAddLectureModal() {
+      document.getElementById('addLectureModal').classList.remove('active');
+    }
+
+    function saveNewLecture() {
+      const subject = document.getElementById('newLectureSubject').value;
+      const id = document.getElementById('newLectureId').value.trim();
+      const chapter = document.getElementById('newLectureChapter').value.trim() || "Not Added";
+      const title = document.getElementById('newLectureTitle').value.trim() || id;
+      const duration = document.getElementById('newLectureDuration').value.trim() || "2:00";
+      const status = document.getElementById('newLectureStatus').value;
+      const notes = document.getElementById('newLectureNotes').value.trim();
+
+      if (!id) {
+        alert("Please enter a valid Lecture ID.");
+        return;
+      }
+
+      const existing = lectureDatabase.find(l => l.id.toLowerCase() === id.toLowerCase());
+      if (existing) {
+        alert(`A lecture with ID "${id}" already exists! Please use a unique Lecture ID.`);
+        return;
+      }
+
+      const isCompleted = status === "Completed";
+      let compDate = '';
+      if (isCompleted) {
+        const today = new Date();
+        compDate = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+      }
+
+      lectureDatabase.push({
+        idx: lectureDatabase.length + 1,
+        id: id,
+        subject: subject,
+        chapter: chapter,
+        title: title,
+        duration: duration,
+        status: status,
+        completed: isCompleted,
+        completionDate: compDate,
+        notes: notes
+      });
+
+      saveData();
+      renderLectures();
+      updateAllProgressMetrics();
+      closeAddLectureModal();
+      showToast(`Lecture ${id} added successfully!`);
+    }
+
+    function deleteLecture(id) {
+      const lecture = lectureDatabase.find(l => l.id === id);
+      if (!lecture) return;
+
+      if (confirm(`Are you sure you want to delete lecture ${lecture.id} (${lecture.title})?`)) {
+        lectureDatabase = lectureDatabase.filter(l => l.id !== id);
+        saveData();
+        renderLectures();
+        updateAllProgressMetrics();
+        showToast(`Lecture ${id} deleted.`);
+      }
+    }
+
     /* --- 10-MINUTE AUDIO RECALL & ALERT ANIMATION --- */
     function playAudioRecall() {
       if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel(); // Stop any pending speech
+        window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(RECALL_MESSAGE);
         utterance.rate = 0.95;
         utterance.pitch = 1.05;
@@ -1277,7 +1493,7 @@
     function closeRecallAlert() {
       const modal = document.getElementById('recallModal');
       modal.classList.remove('active');
-      alertSecondsLeft = ALERT_INTERVAL_SECONDS; // reset timer for next 10 mins
+      alertSecondsLeft = ALERT_INTERVAL_SECONDS;
     }
 
     function startAlertCountdown() {
@@ -1304,7 +1520,7 @@
       const container = document.getElementById('scheduleListContainer');
       container.innerHTML = '';
 
-      dailyPlan.forEach((task, idx) => {
+      dailyPlan.forEach((task) => {
         const row = document.createElement('div');
         row.className = `schedule-item-row ${task.completed ? 'is-done' : ''}`;
         row.dataset.id = task.id;
@@ -1451,6 +1667,9 @@
           <td>
             <input type="text" class="editable-input notes-input cell-notes" data-id="${lec.id}" value="${escapeHtml(lec.notes)}" placeholder="Add notes..." />
           </td>
+          <td style="text-align: center;">
+            <button class="row-delete-btn" data-id="${lec.id}" title="Delete Lecture">🗑️</button>
+          </td>
         `;
         fragment.appendChild(tr);
       });
@@ -1516,6 +1735,13 @@
           saveData();
         }
       });
+
+      tbody.addEventListener('click', (e) => {
+        if (e.target.classList.contains('row-delete-btn')) {
+          const id = e.target.getAttribute('data-id');
+          deleteLecture(id);
+        }
+      });
     }
 
     function parseDurationToHours(durStr) {
@@ -1537,11 +1763,11 @@
       let completedHours = 0;
 
       const subjectStats = {
-        'Physics': { completed: 0, total: 115 },
-        'Maths': { completed: 0, total: 96 },
-        'Organic Chemistry': { completed: 0, total: 70 },
-        'Physical Chemistry': { completed: 0, total: 46 },
-        'Inorganic Chemistry': { completed: 0, total: 1 }
+        'Physics': { completed: 0, total: 0 },
+        'Maths': { completed: 0, total: 0 },
+        'Organic Chemistry': { completed: 0, total: 0 },
+        'Physical Chemistry': { completed: 0, total: 0 },
+        'Inorganic Chemistry': { completed: 0, total: 0 }
       };
 
       const todayStr = new Date().toISOString().slice(0, 10);
@@ -1550,6 +1776,10 @@
       lectureDatabase.forEach(item => {
         const durationHours = parseDurationToHours(item.duration);
         totalHours += durationHours;
+
+        if (subjectStats[item.subject]) {
+          subjectStats[item.subject].total++;
+        }
 
         if (item.completed) {
           completedLectures++;
@@ -1565,7 +1795,7 @@
 
       const remainingLectures = totalLectures - completedLectures;
       const remainingHours = Math.max(0, totalHours - completedHours);
-      const overallPercent = ((completedLectures / totalLectures) * 100).toFixed(1);
+      const overallPercent = totalLectures > 0 ? ((completedLectures / totalLectures) * 100).toFixed(1) : "0.0";
 
       document.getElementById('statTotal').innerText = totalLectures;
       document.getElementById('statTotalHours').innerText = `~${totalHours.toFixed(1)} Total Hrs`;
@@ -1582,6 +1812,13 @@
       updateSubjectCard('pc', subjectStats['Physical Chemistry']);
       updateSubjectCard('ioc', subjectStats['Inorganic Chemistry']);
 
+      // Update filter chip count labels dynamically
+      document.getElementById('chip-phy').innerText = `Physics (${subjectStats['Physics'].total})`;
+      document.getElementById('chip-mat').innerText = `Maths (${subjectStats['Maths'].total})`;
+      document.getElementById('chip-oc').innerText = `Organic Chem (${subjectStats['Organic Chemistry'].total})`;
+      document.getElementById('chip-pc').innerText = `Physical Chem (${subjectStats['Physical Chemistry'].total})`;
+      document.getElementById('chip-ioc').innerText = `Inorganic Chem (${subjectStats['Inorganic Chemistry'].total})`;
+
       updateGoalCalculations(completedLectures, remainingLectures);
 
       document.getElementById('todayDoneCount').innerText = todayCompletedCount;
@@ -1589,8 +1826,9 @@
     }
 
     function updateSubjectCard(prefix, stat) {
-      const pct = ((stat.completed / stat.total) * 100).toFixed(1);
-      document.getElementById(`${prefix}Pill`).innerText = `${stat.completed}/${stat.total} (${pct}%)`;
+      const total = stat.total || 0;
+      const pct = total > 0 ? ((stat.completed / total) * 100).toFixed(1) : "0.0";
+      document.getElementById(`${prefix}Pill`).innerText = `${stat.completed}/${total} (${pct}%)`;
       document.getElementById(`${prefix}Progress`).style.width = `${pct}%`;
     }
 
@@ -1631,7 +1869,7 @@
     /* --- EXPORT, IMPORT & RESET --- */
     function exportData() {
       const backupData = {
-        version: "2.0",
+        version: "3.0",
         exportDate: new Date().toISOString(),
         startDate: localStorage.getItem(START_DATE_KEY),
         dailyPlan: dailyPlan,
@@ -1737,6 +1975,18 @@
       document.getElementById('testAlertBtn').addEventListener('click', triggerRecallAlert);
       document.getElementById('closeRecallBtn').addEventListener('click', closeRecallAlert);
       document.getElementById('replayVoiceBtn').addEventListener('click', playAudioRecall);
+
+      // Add Lecture Modal Handlers
+      document.getElementById('openAddLectureModalBtn').addEventListener('click', openAddLectureModal);
+      document.getElementById('closeAddLectureModalBtn').addEventListener('click', closeAddLectureModal);
+      document.getElementById('cancelAddLectureBtn').addEventListener('click', closeAddLectureModal);
+      document.getElementById('saveNewLectureBtn').addEventListener('click', saveNewLecture);
+      
+      document.getElementById('newLectureSubject').addEventListener('change', (e) => {
+        const nextId = getNextLectureIdForSubject(e.target.value);
+        document.getElementById('newLectureId').value = nextId;
+        document.getElementById('newLectureTitle').value = `Lecture ${nextId.split('-')[1] || '001'}`;
+      });
 
       // Search & Clear
       const searchInput = document.getElementById('searchInput');
